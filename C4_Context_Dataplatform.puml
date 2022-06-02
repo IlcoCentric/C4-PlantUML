@@ -1,0 +1,46 @@
+@startuml "Dataplatform"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!pragma layout smetana
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Centric Dataplatform Deployment landscape with DataIku
+
+Person_Ext(customer, "Gemeente", "Gemeente met behoefte voor dataplatform")
+
+System(saas, "dataplatform", "Dataplatform SaaS service")
+
+Enterprise_Boundary(dataplatform, "Dataplatform"){
+ Deployment_Node(subscriptionA, "Subscription via CSP"){
+   System(tenantA, "Gemeente A", "DataIku instance")
+ }
+ Deployment_Node(subscriptionB, "Subscription via CSP"){
+  System(tenantB, "Gemeente B", "DataIku instance")
+ }
+ Deployment_Node(subscriptionC, "Subscription via CSP"){
+  System(tenantC, "Gemeente C", "DataIku instance")
+ }
+ Deployment_Node(subscriptionCentric, "Subscription via MCA"){
+  System(tenantCentric, "Centric", "Value added services")
+ }
+ Deployment_Node(subscriptionSaaS, "Subscription via MCA"){
+  System(discovery, "Discovery/Share/Invite", "Centric developed service for integration")
+ }
+}
+
+Rel(customer, saas, "Requests insights")
+Rel_D(saas, discovery, "ask for discovery")
+Rel(discovery, tenantA, "Integration")
+Rel(discovery, tenantB, "Integration")
+Rel(discovery, tenantC, "Integration")
+Rel(discovery, tenantCentric, "Integration")
+'Rel_U(tenantCentric, discovery, "Learned model")
+'Rel_U(tenantA, discovery, "Shared data")
+'Rel_U(tenantB, discovery, "Shared data")
+'Rel_U(tenantC, discovery, "Shared data")
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

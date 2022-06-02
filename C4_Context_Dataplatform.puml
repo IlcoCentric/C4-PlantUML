@@ -13,17 +13,25 @@ Person_Ext(customer, "Gemeente", "Gemeente met behoefte voor dataplatform")
 System(saas, "dataplatform", "Dataplatform SaaS service")
 
 Enterprise_Boundary(dataplatform, "Dataplatform"){
- Deployment_Node(subscriptionA, "Subscription via CSP"){
-   System(tenantA, "Gemeente A", "DataIku instance")
+ Deployment_Node(tenantA, "Customer Tenant", "Azure Tenant"){
+  Deployment_Node(subscriptionA, "Subscription", "CSP"){
+   System(dataikuA, "Gemeente A", "DataIku instance")
+  }  
  }
- Deployment_Node(subscriptionB, "Subscription via CSP"){
-  System(tenantB, "Gemeente B", "DataIku instance")
+ Deployment_Node(tenantB, "Customer Tenant", "Azure Tenant"){
+  Deployment_Node(subscriptionB, "Subscription", "CSP"){
+   System(dataikuB, "Gemeente B", "DataIku instance")
+  }  
  }
- Deployment_Node(subscriptionC, "Subscription via CSP"){
-  System(tenantC, "Gemeente C", "DataIku instance")
+ Deployment_Node(tenantC, "Customer Tenant", "Azure Tenant"){
+  Deployment_Node(subscriptionC, "Subscription", "CSP"){
+   System(dataikuC, "Gemeente C", "DataIku instance")
+  }
  }
- Deployment_Node(subscriptionCentric, "Subscription via MCA"){
-  System(tenantCentric, "Centric", "Value added services")
+ Deployment_Node(tenantCentric, "Centric SaaS Tenant", "Azure Tenant"){
+  Deployment_Node(subscriptionCentric, "Subscription", "MCA"){
+   System(vasCentric, "Centric", "Value added services")
+  }
  }
  Deployment_Node(subscriptionSaaS, "Subscription via MCA"){
   System(discovery, "Discovery/Share/Invite", "Centric developed service for integration")
@@ -32,14 +40,10 @@ Enterprise_Boundary(dataplatform, "Dataplatform"){
 
 Rel(customer, saas, "Requests insights")
 Rel_D(saas, discovery, "ask for discovery")
-Rel(discovery, tenantA, "Integration")
-Rel(discovery, tenantB, "Integration")
-Rel(discovery, tenantC, "Integration")
-Rel(discovery, tenantCentric, "Integration")
-'Rel_U(tenantCentric, discovery, "Learned model")
-'Rel_U(tenantA, discovery, "Shared data")
-'Rel_U(tenantB, discovery, "Shared data")
-'Rel_U(tenantC, discovery, "Shared data")
+Rel(discovery, dataikuA, "Integration")
+Rel(discovery, dataikuB, "Integration")
+Rel(discovery, dataikuC, "Integration")
+Rel(discovery, vasCentric, "Integration")
 
 footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
 

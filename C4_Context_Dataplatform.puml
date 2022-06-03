@@ -1,4 +1,4 @@
-@startuml "Dataplatform"
+@startuml "C4_Context_Dataplatform"
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !pragma layout smetana

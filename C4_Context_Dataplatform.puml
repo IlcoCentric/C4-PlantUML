@@ -3,7 +3,7 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
 !pragma layout smetana
 
-LAYOUT_TOP_DOWN()
+'LAYOUT_LEFT_RIGHT()
 LAYOUT_WITH_LEGEND()
 
 title Centric Dataplatform Deployment landscape with DataIku
@@ -33,17 +33,18 @@ Enterprise_Boundary(dataplatform, "Dataplatform"){
    System(vasCentric, "Centric", "Value added services")
   }
  }
- Deployment_Node(subscriptionSaaS, "Subscription via MCA"){
-  System(discovery, "Discovery/Share/Invite", "Centric developed service for integration")
- }
 }
 
 Rel(customer, saas, "Requests insights")
-Rel_D(saas, discovery, "ask for discovery")
-Rel(discovery, dataikuA, "Integration")
-Rel(discovery, dataikuB, "Integration")
-Rel(discovery, dataikuC, "Integration")
-Rel(discovery, vasCentric, "Integration")
+Rel_D(saas, vasCentric, "ask for discovery")
+BiRel(vasCentric, dataikuA, "Integration")
+BiRel(vasCentric, dataikuB, "Integration")
+BiRel(vasCentric, dataikuC, "Integration")
+Lay_U(dataikuB, dataikuA)
+Lay_D(dataikuB, dataikuC)
+Lay_R(dataikuB, vasCentric)
+Lay_R(dataikuA, vasCentric)
+Lay_R(dataikuC, vasCentric)
 
 footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
 

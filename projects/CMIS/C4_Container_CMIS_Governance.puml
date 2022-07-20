@@ -1,0 +1,45 @@
+@startuml "C4_Container_CMIS_Governance"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!pragma layout smetana
+
+LAYOUT_WITH_LEGEND()
+
+title Cloud Management Implementation Services Governance
+
+Person(secops, "Security Operator", "authenticated by PIM")
+
+Enterprise_Boundary(azuregovernance, "CMiS Azure Governance"){
+ System_Boundary(policyengine, "Policy Engine", "ARM provided"){
+   System(arm, "Policy Engine", "Azure Resource Manager")
+   System(templates, "Templates", "Bicep, ARM")
+   System(resourcegraph, "QueryEnvironment", "Azure Resource Graph")
+ }
+ System_Boundary(deploy, "Deployment", "policy, RBAC"){
+   System(azops, "Governance deployment", "AzOps CI/CD pipeline")
+   System(repository, "Code Repository", "Azure DevOps")
+ }
+}
+Enterprise_Boundary(landingzones, "Cloud Adoption Framework Landingzones"){
+  System_Boundary(tenantgovernance, "Management Groups", "Subscription organization"){
+   System(policy, "policy declaration", "policy assignments")
+   System(rbac, "RBAC definition", "RBAC assignments")
+ } 
+}
+
+Lay_L(rbac, policy)
+
+Rel_R(templates, arm, "injected into")
+Rel_L(resourcegraph, arm, "extracts from")
+Rel_D(arm, policy, "create")
+Rel_D(arm, rbac, "create")
+Rel_D(secops, repository, update code)
+Rel_U(secops, azops, "triger pipeline")
+Rel_L(azops, repository, "reads")
+Rel_D(azops, templates, "deploys")
+Rel_D(azops, resourcegraph, "reads config from")
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

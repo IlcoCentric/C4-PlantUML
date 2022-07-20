@@ -1,0 +1,58 @@
+@startuml "C4_Container_Dataplatform"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!include DEVICONS/microsoftsqlserver.puml
+
+!pragma layout smetana
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Centric Dataplatform Container landscape with DataIku
+
+
+Person_Ext(customer, "Gemeente", "Gemeente met behoefte voor dataplatform")
+
+System_Ext(saas, "dataplatform", "Dataplatform SaaS service")
+
+Enterprise_Boundary(dataplatform, "Dataplatform"){
+    System_Boundary(dataikuA, "Gemeente A", "DataIku instance"){
+      Container(fleetmanagerA, "Fleet Manager", "DataIku", "Facilitate deployment of DataIku cluster resources")
+      Container(dssnodesA, "DSS nodes", "Azure AKS", "Nodes that run the DataIku software")
+      ContainerDb(datapoolA, "Data pool","Microsoft SQL, Azure Datalake", "Holds data to build models")
+    }
+    'System_Boundary(dataikuB, "Gemeente B", "DataIku instance"){
+      'Container(fleetmanagerB, "Fleet Manager", "DataIku", "Facilitate deployment of DataIku cluster resources")
+      'Container(dssnodesB, "DSS nodes", "Azure AKS", "Nodes that run the DataIku software")
+      'ContainerDb(datapoolB, "Data pool","Microsoft SQL, Azure Datalake", "Holds data to build models")
+    '}
+    'System_Boundary(dataikuC, "Gemeente C", "DataIku instance"){
+      'Container(fleetmanagerC, "Fleet Manager", "DataIku", "Facilitate deployment of DataIku cluster resources")
+      'Container(dssnodesC, "DSS nodes", "Azure AKS", "Nodes that run the DataIku software")
+      'ContainerDb(datapoolC, "Data pool","Microsoft SQL, Azure Datalake", "Holds data to build models")
+    '}
+    System_Boundary(centricVAS, "Centric", "Vallue Added Services"){
+      ContainerDb(datalake, "Datalake", "ADLS Gen2, Delta lake", "Shared datalake")
+      ContainerDb(datastorage, "Data storage", "Microsoft SQL", "Shared data storage", $sprite="microsoftsqlserver")
+      Container(datavisual, "Data Visualization", "PowerBI", "Visualizing the results")
+      Container(elasticcompute, "Elastic Compute","AKS, Spark, Jupyter, Webapps", "Doing the compute")
+    }
+}
+
+Rel(customer,saas, "Requests insight")
+Rel(saas, datavisual, "Ask for discovery")
+Rel(elasticcompute, datastorage, "uses", "JDBC")
+Rel(elasticcompute, datalake, "uses", "Connector")
+Rel(datavisual, datalake, "uses", "Connector")
+Rel(datavisual, datastorage, "uses", "JDBC")
+Rel(datalake, datapoolA, "import data from")
+Rel_L(dssnodesA, datastorage, "load model from")
+Rel(dataikuA, centricVAS, "interacts with", "technology")
+Rel(fleetmanagerA, dssnodesA, "deploys", "ARM templates")
+Rel(dssnodesA, datapoolA, "uses data from", "JDBC, Build-in connector, Plugin")
+
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

@@ -1,0 +1,74 @@
+@startuml "C4_Context_CMIS_Governance"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!pragma layout smetana
+
+'LAYOUT_LEFT_RIGHT()
+LAYOUT_WITH_LEGEND()
+
+title Cloud Management Implementation Services Governance
+
+Person(secops, "Security Operator", "authenticated by PIM")
+Person_Ext(devops1, "Platform Operator", "authenticated by PIM")
+Person_Ext(devops2, "Workload Operator", "authenticated by PIM")
+Person_Ext(devops3, "Resource Operator", "authenticated by PIM")
+
+Enterprise_Boundary(azuregovernance, "CMiS Azure Governance"){
+   System(deployment1, "Deployment", "Policy, RBAC")
+   System(policyengine1, "Policy Engine", "Azure Resource Manager")
+}
+Enterprise_Boundary(azuredevops, "CMS Azure DevOps"){
+   System_Ext(deployment2, "Deployment", "Resources")
+   System_Ext(policyengine2, "Policy Engine", "Azure Resource Manager")
+   System_Ext(lighthouse, "Azure Lighthouse", "Partner authorisation")
+}
+
+Enterprise_Boundary(landingzone, "Cloud Adoption Landingzones"){
+   System_Boundary(managementgroups, "Management Groups", "Subscription organization"){
+    System(managementgroup1, "Management Group", "Management Group")
+    System(managementgroup2, "Management Group", "Management Group")
+   }
+   System_Boundary(subscriptions, "Subscriptions"){
+    System_Ext(subscription1, "Subscription", "Subscription")
+    System_Ext(subscription2, "Subscription", "Subscription")
+   }
+   System_Boundary(resourcegroups, "Resource Groups"){
+    System_Ext(resourcegroup1, "Resource Group", "Resource Group")
+    System_Ext(resourcegroup2, "Resource Group", "Resource Group")    
+   }
+   System_Boundary(resources, "Resources"){    
+    System_Ext(resource1, "Resource", "IaaS, PaaS resource")
+    System_Ext(resource2, "Resource", "IaaS, PaaS resource")
+   }
+}
+
+Lay_R(managementgroup1, managementgroup2)
+
+Rel_D(secops, deployment1, "manage")
+Rel_D(secops, deployment2, "manage")
+Rel_U(devops1, deployment2, "manage")
+Rel_U(devops2, deployment2, "manage")
+Rel_U(devops3, deployment2, "manage")
+
+Rel_L(deployment1, policyengine1, "deploys through")
+Rel_R(policyengine1, deployment1, "register config from")
+Rel_L(deployment2, policyengine2, "deploys through")
+Rel_R(policyengine2, deployment2, "register config from")
+
+Rel_D(policyengine1, managementgroup1, "Deploys to")
+Rel_D(policyengine1, managementgroup2, "Deploys to")
+Rel_L(policyengine2, lighthouse, "Deploys through")
+Rel_L(lighthouse, subscription2, "Deploys to")
+
+Rel_D(managementgroup1, subscription1, "defines governance for")
+Rel_D(managementgroup2, subscription2, "defines governance for")
+Rel_U(resourcegroup1, subscription1, "is part of")
+Rel_U(resourcegroup2, subscription1, "is part of")
+
+Rel_U(resource1, resourcegroup1, "is part of")
+Rel_U(resource2, resourcegroup1, "is part of")
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

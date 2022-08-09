@@ -20,11 +20,11 @@ Enterprise_Boundary(azuregovernance, "CMiS Azure Governance"){
 }
 Enterprise_Boundary(azuredevops, "CMS Azure DevOps"){
    System_Ext(deployment2, "Deployment", "Resources")
-   System_Ext(policyengine2, "Policy Engine", "Azure Resource Manager")
+   System_Ext(resourceengine, "Resource Engine", "Azure Resource Manager")
    System_Ext(lighthouse, "Azure Lighthouse", "Partner authorisation")
 }
 
-Enterprise_Boundary(landingzone, "Cloud Adoption Landingzones"){
+Enterprise_Boundary(landingzone, "Cloud Adoption Framework Landingzones"){
    System_Boundary(managementgroups, "Management Groups", "Subscription organization"){
     System(managementgroup1, "Management Group", "Management Group")
     System(managementgroup2, "Management Group", "Management Group")
@@ -53,12 +53,12 @@ Rel_U(devops3, deployment2, "manage")
 
 Rel_L(deployment1, policyengine1, "deploys through")
 Rel_R(policyengine1, deployment1, "register config from")
-Rel_L(deployment2, policyengine2, "deploys through")
-Rel_R(policyengine2, deployment2, "register config from")
+Rel_L(deployment2, resourceengine, "deploys through")
+Rel_R(resourceengine, deployment2, "register config from")
 
 Rel_D(policyengine1, managementgroup1, "Deploys to")
 Rel_D(policyengine1, managementgroup2, "Deploys to")
-Rel_L(policyengine2, lighthouse, "Deploys through")
+Rel_L(resourceengine, lighthouse, "Deploys through")
 Rel_L(lighthouse, subscription2, "Deploys to")
 
 Rel_D(managementgroup1, subscription1, "defines governance for")

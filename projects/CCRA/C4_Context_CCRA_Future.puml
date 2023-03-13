@@ -1,0 +1,19 @@
+@startuml "C4_Context_CCRA_Future"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!pragma layout smetana
+
+'LAYOUT_LEFT_RIGHT()
+LAYOUT_WITH_LEGEND()
+
+title Centric CLoud Reference Architecture context overview
+
+Person_Ext(devops1, "DevOps-Cloud Engineer", "The engineer is responsible foor teh CI/CD proces")
+
+System(morpheus, "Orchestration", "application-centric automation and orchestration")
+System(nebula, "Nebula", "Nebula is a standardised platform for the delivery of Cloud solutions")
+System_Ext(equinix, "Equinix IaaS", "Private Cloud based on vCD, provided by Equinix")
+System_Ext(oraclecloud, "OCI", "Oracle Cloud Infrastructure")
+System_Ext(azurecloud, "Azure", "Microsoft Public Cloud")
+System_Ext(othercloud, "Additional Cloud provider", "Public Cloud provider based on future requirements")

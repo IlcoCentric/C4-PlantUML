@@ -9,11 +9,45 @@ LAYOUT_WITH_LEGEND()
 
 title Centric CLoud Reference Architecture context overview
 
-Person_Ext(devops1, "DevOps-Cloud Engineer", "The engineer is responsible foor teh CI/CD proces")
+Person_Ext(devops1, "DevOps-Cloud Engineer", "The engineer is responsible for the CI/CD proces")
+Person_Ext(custeng, "Customer Engineer", "The engineer is responsible for the service delivery")
 
 System(morpheus, "Orchestration", "application-centric automation and orchestration")
-System(nebula, "Nebula", "Nebula is a standardised platform for the delivery of Cloud solutions")
-System_Ext(equinix, "Equinix IaaS", "Private Cloud based on vCD, provided by Equinix")
-System_Ext(oraclecloud, "OCI", "Oracle Cloud Infrastructure")
-System_Ext(azurecloud, "Azure", "Microsoft Public Cloud")
-System_Ext(othercloud, "Additional Cloud provider", "Public Cloud provider based on future requirements")
+System_Boundary(delivery, "Apllication and Infrastructure Delivery"){
+    System(nebula, "Nebula", "Nebula is a standardised platform for the delivery of Cloud solutions")
+    System(cmis, "CMiS", "Standardised platfrom to deliver Cloud infrastructures and application on Azure")
+}
+System_Boundary(cloud, "Private and Public Cloud platform"){
+    System_Ext(equinix, "Equinix IaaS", "Private Cloud based on vCD, provided by Equinix")
+    System_Ext(oraclecloud, "OCI", "Oracle Cloud Infrastructure")
+    System_Ext(azurecloud, "Azure", "Microsoft Public Cloud")
+    System_Ext(othercloud, "Additional Cloud provider", "Public Cloud provider based on future requirements")
+}
+System_Boundary(azuredevops, "Azure DevOps repository and deployment"){
+    System(repo, "Azure DevOps Repo", "description")
+    System(cicd, "Azure DevOps deployment", "description")
+}
+
+Lay_R(devops1,nebula)
+Lay_R(oraclecloud, azurecloud)
+Lay_D(cmis, nebula)
+'Lay_U(nebula, morpheus)
+Rel(custeng, morpheus, "uses")
+Rel(devops1, nebula, "label")
+Rel(devops1, cmis, "label")
+Rel(morpheus, nebula, "trigger")
+Rel(morpheus, cmis, "trigger")
+Rel(deliver, cloud, "deploy to")
+Rel(nebula, oraclecloud, "deploy to")
+Rel(nebula, azurecloud, "deploy to")
+Rel(nebula, equinix, "deploy to")
+Rel(nebula, othercloud, "deploy to")
+Rel(cmis, azurecloud, "deploy to")
+Rel(repo, nebula, "Provide code template to")
+Rel(repo, cicd, "Provide code template to")
+Rel(cmis, cicd, "uses pipelines from")
+
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

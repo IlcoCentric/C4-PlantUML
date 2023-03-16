@@ -1,0 +1,26 @@
+@startuml "C4_Context_CCRA_Future"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!pragma layout smetana
+
+LAYOUT_LEFT_RIGHT()
+LAYOUT_WITH_LEGEND()
+
+title Centric CLoud Reference Architecture multi cloud context overview
+
+Person_Ext(devops1, "DevOps-Cloud Engineer", "The engineer is responsible for the CI/CD proces")
+Person_Ext(custeng, "Customer Engineer", "The engineer is responsible for the service delivery")
+
+System(orchestration, "orchestrator", "orchestration application and infrastructure deployments")
+System(provisioning, "provision", "provisioning or trigering of application and infrastructure deployments")
+System(azurecloud, "Azure", "Azure Cloud Platform")
+System(oraclecloud, "OCI", "Oracle Cloud Infrastructure")
+System(othercloud, "other", "Future Cloud platform or infrastructure")
+System(repo, "Software Code Repository", "description")
+System(cicdint, "Internal Software Code Deployment", "description")
+System_Ext(cicdext, "External Software Code Deployment", "description")
+
+footer drawn by Ilco Zeggelaar with PlantUML v. %version() and C4-PlantUML v. C4Version() 
+
+@enduml

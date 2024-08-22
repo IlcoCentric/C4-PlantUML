@@ -14,8 +14,10 @@
     - [C4_superhero](#c4_superhero)
     - [C4_united](#c4_united)
     - [C4_violet](#c4_violet)
+  - [Matt Weagle themes](#matt-weagle-themes)
   - [Write custom themes](#write-custom-themes)
     - [Following variables could be set in a theme, additional to the skinparams and styles](#following-variables-could-be-set-in-a-theme-additional-to-the-skinparams-and-styles)
+    - [(C4 styled) Sequence diagram and themes](#c4-styled-sequence-diagram-and-themes)
 - samples
   - [📄 C4 Model Diagrams](samples/C4CoreDiagrams.md#c4-model-diagrams)
 
@@ -41,7 +43,18 @@ In order to invoke a local theme `C4_foo`, you have to use the following directi
 !theme C4_foo from /path/to/themes/folder
 ```
 
-(It is planed that included themes can be loaded via `!theme C4_united from <C4/themes>` too, but this requires a PlantUML extension with is missing atm)
+Starting with PlantUML v1.2023.8 the C4 themes can be invoked via C4-Stdlib or calculated paths too:
+
+```plantuml
+' theme from C4-Stdlib
+!theme C4_united from <C4/themes>
+
+' another alternative: theme with calculated from
+!RELATIVE_INCLUDE = "https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master"
+!theme C4_united from %get_variable_value("RELATIVE_INCLUDE")/themes
+```
+
+Following simple sample uses the C4_united theme from the official remote repository path.
 
 ```plantuml
 @startuml
@@ -139,6 +152,35 @@ Theme [C4_violet](https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/
 ```
 
 ![](https://www.plantuml.com/plantuml/png/hS_12i8m383X-vvYUu0jbvqyJOQt2HuKZz9jSIiaRMbInRUtzHay9GJ-3pA8cgY9gMfqHyPwx1ylwmcrVaRFzQuQv00GpRlRhEvfJe9nyKxHQRTuXa365Q0LNSdECFRjfPnkvmdOY6A4donLOzr2QSN_e24N7xYYw97eHCYvbNlM9jpGhLqeJmrvo_CB)
+
+## Matt Weagle themes
+
+Matt Weagle published a set of impressive themes based on ColorBrewer and Seaborn palettes (thank you Matt).
+
+https://github.com/mweagle/C4-PlantUML-Themes contains an overview of all his themes.
+
+They can be simply invoked like the `cb_seq_YlOrBr_9` theme
+
+```plantuml
+@startuml
+!theme cb_seq_YlOrBr_9 from https://raw.githubusercontent.com/mweagle/C4-PlantUML-Themes/main/palettes
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Administrator")
+System_Boundary(c1, "Sample System") {
+    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", "Allows users to compare multiple Twitter timelines")
+}
+System(twitter, "Twitter")
+
+Rel(admin, web_app, "Uses", "HTTPS")
+Rel(web_app, twitter, "Gets tweets from", "HTTPS")
+
+SHOW_FLOATING_LEGEND()
+@enduml
+```
+
+![Matt theme sample - cb_div_BrBG_11](https://www.plantuml.com/plantuml/png/ZL5DRzD04BtlhzY6YoCrjegumAck2IbIcbZOfUAqMjj3izBi1pjZMHNYlxEhGDjZVHbvtflteRqcrf5dY-A2Js11ZeCY-AL-u37UHFLH_epUoXDpe4zL5VLIFXe-pSDC44Vl61oNexULNK0_8bJDXqsBsl7ztNxJPq6gh3Qk2Xg16KY82-D6d2TuWsX0xNAs3V64PdWjNbbD336jLECT9mk8PSWzH0kHl2lqP8sxbAiwJqCSDVkuMelkAHrQTUDdD-duL8nNYTHf6n3a6LkjvMyXq_UiN2mmA1r2OZx08EiGq8oQZNUhj6hUNSgwQyl3jayd4UJxyahUVMyoLYFwXMHkHfAz7BqDEb7iZ6ooPRyOPeYIZGLCNfGY_laNik0pc7JEj9nVV0FyN-ubrZq1PR_Rlc-xnCgaP_H5PWTCwHVoo2_x-aHqjyS7zML_hFklXvtQRtVRm-TYBQx1JRF5lm00 "Matt theme sample - cb_div_BrBG_11")
 
 ## Write custom themes
 
@@ -332,3 +374,67 @@ If you have any interesting theme, you can also propose a pull request so that w
 !$EIGHT_SIDED_SIZE ?= 18
 ```
 
+### (C4 styled) Sequence diagram and themes
+
+All sequence diagram specific renderings (like sequence-lifeline-color...) can be directly defined via skinparams and styles.
+The advantage is that no separate variable definitions are required anymore.
+(But the disadvantage is that all themes have to define there own skinparams and styles.)
+
+A theme could contain e.g. following definitions, skinparams and styles
+
+```plantuml
+' $BOUNDARY_BG_COLOR... have to be defined in theme itself that it can be used in styles,...
+' (no default values which are defined in C4.puml) 
+' If skinparams and styles are defined with concrete values no variables are required 
+!$BOUNDARY_BG_COLOR ?= "transparent"
+!$BOUNDARY_COLOR ?= "#444444"
+!$ARROW_COLOR ?= "#666666"
+
+' replace transparent with concrete background that it can be used as font color too
+!if ($BOUNDARY_BG_COLOR == "transparent")
+  !$SEQUENCE_BG_COLOR = white
+!else
+  !$SEQUENCE_BG_COLOR = $BOUNDARY_BG_COLOR
+!endif
+
+' "C4 styled" default is no foot boxes
+hide footbox
+' "C4 styled" default is that lifeline is arrow color
+skinparam SequenceLifelineBorderColor $ARROW_COLOR
+
+skinparam SequenceGroupBodyBackgroundColor $SEQUENCE_BG_COLOR
+skinparam SequenceGroupFontColor $BOUNDARY_COLOR
+skinparam SequenceGroupBackgroundColor $BOUNDARY_COLOR
+skinparam SequenceGroupHeaderFontColor $SEQUENCE_BG_COLOR
+skinparam SequenceGroupBorderColor $BOUNDARY_COLOR
+
+skinparam SequenceReferenceBackgroundColor $SEQUENCE_BG_COLOR
+skinparam SequenceReferenceFontColor $BOUNDARY_COLOR
+skinparam SequenceReferenceHeaderBackgroundColor $BOUNDARY_COLOR
+' VIA STYLE
+' skinparam SequenceReferenceHeaderFontColor $SEQUENCE_BG_COLOR
+<style>
+referenceHeader {
+  fontcolor $SEQUENCE_BG_COLOR
+}
+</style>
+skinparam SequenceReferenceBorderColor $BOUNDARY_COLOR
+
+skinparam SequenceDividerBackgroundColor $SEQUENCE_BG_COLOR
+skinparam SequenceDividerFontColor $BOUNDARY_COLOR
+skinparam SequenceDividerBorderColor $BOUNDARY_COLOR
+
+' VIA STYLE
+' skinparam SequenceDelayFontColor green
+<style>
+sequenceDiagram {
+  delay {
+    FontColor $BOUNDARY_COLOR
+  }
+}
+</style>
+```
+
+Following sample could be used as starting point for custom themes with sequence diagram support:
+
+[![](https://www.plantuml.com/plantuml/svg/hLPjRzis4FxENt7sKYG16Zi3idqeagv-SLu0DyaSfqC_6RHqieZIf4UUd6P3__kEr2mxbPFKG0aabgXxdhjxxgZJ1q_IKJ7NGZJsxZsESvmZd46pTpAPEKJJ568V4ckMw0WKmOEY76IQAbBMICsFvdDfKj3A84WtA-Pe28xwey6mCxxwD9XSNVU6z_t1MRFLRhMQG1OAZw1j8hL-50sLmPkbT4fEDKxmg_Ba3vhVWvk70c0V6XIZuz3EbVCqHa-GEJk7DpEaISMobBh0RIJjYFS2LaphZ2DDY71bqq3jyLdBd6ZXtxNRJZwqPgn8CUMa7Cj4QAZ5chGNMfgWwv6dLAjfktToT1ksxZyEstFf2TtQaqbL5cG-hIsuxOp6S7CEuyl1nm44extkpVrrlpFwFEbUJ7etmvjHgzM2N2unQ3j5I35J1bDG1ihO5NdK6T_8MC54cc1M-DB6qwD6_vP9cFp0s82NXIQ8Cdfuo5MIWtIRn5o2reAJEmJ6N6NWloYpa4xEFOHUA2cVO6BRi3w9Gy8LDJihYxQoTlXteHoRYqOzJVY3svASD9vTeQ7cfj7QufUJkCBJpcXqyzVcez_ZYYtja2kK86mGVXVaL2PVPiuM9jqgdVIGMKDihwq3iZRsyi6MkC-UnXsRkR5tD_ZpVd3T6spO1Qq9gzRRRbDtiEwWS6nBzTDcLKSLXSwi9PZQh-X5hbACztpxF2Rch5M6yMIhK21d7yfqHLLmkEEIeKbm-BzbrxeKNI-Aiba0iGLpmUekkZPzx5PIby1wui-XpwsXY5dhyZ9WxMeds2LAJYjwsp72jI1rPrim8ypGXOjTDAcZTz6b0fL9lgRGFdowwi3T-FDmmDUlqhsesMbilFV2FSN0lmBYwKgU0tuJf-qI-wA6ksdVLql5zhihlyRkeFiAycAGhudTHoqVrqxZoAvKzPKZEMDGL3KDW7W5y7om0Dys9MRNxskhDfjscEKDPH9TfFZ3avjd_YhbE7cgbsJ5z3D6SirDzMgzHUUjEUXebU1RQCRVvk5gkskdlCd_UKl8XDHI4WBV2p52lKALLfs2SZIa4adA6XW5TvuYK1Fu8adG-wpGaCYO842WYDZ8KwVeC6H1c39740MydIDmfwHWCyYaqeKhYRIr2_Zr-FWOI9NVGUMgnTY_leCE4P-3M2q0La64lt1GmIxHmTeUte4oYhQacgFMbXagL9G4O9mhlvgbrl26HtueTVo8zC4HC4887fnNpAoaLl-KgPwTxQBeQyADq2-iyLp8w6k42oJrWXzZ6Uv0_h0_MKFK_8QFjzzWhan1w45BOdFUs-8-aLfxM2e9YzoQ21PtbpnVXuEBmNN_u51yOEMuQVy3)](https://www.plantuml.com/plantuml/uml/hLPjRzis4FxENt7sKYG16Zi3idqeagv-SLu0DyaSfqC_6RHqieZIf4UUd6P3__kEr2mxbPFKG0aabgXxdhjxxgZJ1q_IKJ7NGZJsxZsESvmZd46pTpAPEKJJ568V4ckMw0WKmOEY76IQAbBMICsFvdDfKj3A84WtA-Pe28xwey6mCxxwD9XSNVU6z_t1MRFLRhMQG1OAZw1j8hL-50sLmPkbT4fEDKxmg_Ba3vhVWvk70c0V6XIZuz3EbVCqHa-GEJk7DpEaISMobBh0RIJjYFS2LaphZ2DDY71bqq3jyLdBd6ZXtxNRJZwqPgn8CUMa7Cj4QAZ5chGNMfgWwv6dLAjfktToT1ksxZyEstFf2TtQaqbL5cG-hIsuxOp6S7CEuyl1nm44extkpVrrlpFwFEbUJ7etmvjHgzM2N2unQ3j5I35J1bDG1ihO5NdK6T_8MC54cc1M-DB6qwD6_vP9cFp0s82NXIQ8Cdfuo5MIWtIRn5o2reAJEmJ6N6NWloYpa4xEFOHUA2cVO6BRi3w9Gy8LDJihYxQoTlXteHoRYqOzJVY3svASD9vTeQ7cfj7QufUJkCBJpcXqyzVcez_ZYYtja2kK86mGVXVaL2PVPiuM9jqgdVIGMKDihwq3iZRsyi6MkC-UnXsRkR5tD_ZpVd3T6spO1Qq9gzRRRbDtiEwWS6nBzTDcLKSLXSwi9PZQh-X5hbACztpxF2Rch5M6yMIhK21d7yfqHLLmkEEIeKbm-BzbrxeKNI-Aiba0iGLpmUekkZPzx5PIby1wui-XpwsXY5dhyZ9WxMeds2LAJYjwsp72jI1rPrim8ypGXOjTDAcZTz6b0fL9lgRGFdowwi3T-FDmmDUlqhsesMbilFV2FSN0lmBYwKgU0tuJf-qI-wA6ksdVLql5zhihlyRkeFiAycAGhudTHoqVrqxZoAvKzPKZEMDGL3KDW7W5y7om0Dys9MRNxskhDfjscEKDPH9TfFZ3avjd_YhbE7cgbsJ5z3D6SirDzMgzHUUjEUXebU1RQCRVvk5gkskdlCd_UKl8XDHI4WBV2p52lKALLfs2SZIa4adA6XW5TvuYK1Fu8adG-wpGaCYO842WYDZ8KwVeC6H1c39740MydIDmfwHWCyYaqeKhYRIr2_Zr-FWOI9NVGUMgnTY_leCE4P-3M2q0La64lt1GmIxHmTeUte4oYhQacgFMbXagL9G4O9mhlvgbrl26HtueTVo8zC4HC4887fnNpAoaLl-KgPwTxQBeQyADq2-iyLp8w6k42oJrWXzZ6Uv0_h0_MKFK_8QFjzzWhan1w45BOdFUs-8-aLfxM2e9YzoQ21PtbpnVXuEBmNN_u51yOEMuQVy3)

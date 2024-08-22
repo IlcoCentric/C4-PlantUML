@@ -18,6 +18,12 @@ C4-PlantUML comes with some layout options.
     - [Using SHOW_PERSON_SPRITE(sprite)](#using-show_person_spritesprite)
     - [Using SHOW_PERSON_PORTRAIT()](#using-show_person_portrait)
     - [Using SHOW_PERSON_OUTLINE()](#using-show_person_outline)
+  - [(C4 styled) Sequence diagram specific layout options](#c4-styled-sequence-diagram-specific-layout-options)
+    - [SHOW_ELEMENT_DESCRIPTIONS(?show)](#show_element_descriptionsshow)
+    - [SHOW_FOOT_BOXES(?show)](#show_foot_boxesshow)
+    - [SHOW_INDEX(?show)](#show_indexshow)
+  - [Optional support of additional PlantUML elements](#optional-support-of-additional-plantuml-elements)
+    - [List of supported PlantUML elements](#list-of-supported-plantuml-elements)
 - [📄 Themes](Themes.md#themes)
 - samples
   - [📄 C4 Model Diagrams](samples/C4CoreDiagrams.md#c4-model-diagrams)
@@ -79,7 +85,7 @@ Rel(web_app, twitter, "Gets tweets from", "HTTPS")
 
 ![LAYOUT_TOP_DOWN Sample](https://www.plantuml.com/plantuml/png/JL1DZzCm4BtxLmpba5Jg9bh4YTE6WE2msqOaPSKfSk8fjUGFovuegX3_dR4eBRayPTx7FCzJ8XbfiKQyqMusYq8u4uNqeQwZNAkVcixBj2ICitU4ZghPspeOwRBd8P4oUghRzmzT7XrVdcih4s7aqTYoGsg7iGevNzG5x3s1GrIeOC9PSYxGMIVGYH51uKakXg2enNFput0Snk7GZPyEh_joAqI7CNbNIcMrsy6coQWJHKa-RhQYl_1YEtxqYrCoNihvSGT5BsqmM6pXbm3-RfNA5QTHXi0vhpX14uBHioJjtOP7xTiTD7rNxJyFR8a8xwf7UFdUPgunngy9yacuj0U-Hv0iiLnSyouOLas44KXRDBmhSRVVrtOb_IKvvofZKdn3y-zLzrh7n4x6hyFGzQpAeXjxZ_c2bFWNCvoYj_zRdj0fllmV "LAYOUT_TOP_DOWN Sample")
 
-`LAYOUT_LEFT_RIGHT()` rotates the flow visualization to *from Left to Right* and directed relations like `Rel_Left()`, `Rel_Right()`, `Rel_Up()` and `Rel_Down()` are rotated too.
+`LAYOUT_LEFT_RIGHT()` rotates the flow visualization to _from Left to Right_ and directed relations like `Rel_Left()`, `Rel_Right()`, `Rel_Up()` and `Rel_Down()` are rotated too.
 
 ```plantuml
 @startuml LAYOUT_LEFT_RIGHT Sample
@@ -100,7 +106,7 @@ Rel(web_app, twitter, "Gets tweets from", "HTTPS")
 
 ![LAYOUT_LEFT_RIGHT Sample](https://www.plantuml.com/plantuml/png/JKzDR-8m4BtdLtZP0q62HApsj2Uo4OLAq4OajEefSf9fiUGFonuhGbN_UySgXVeoyhoFUM_baJiCIYQ_XEvb682T4At_b-UEZzcRm5FeWWVN6usWCUkDogtaEceM7WSfkhpykwZYwhZVvOfx14UhjYG55nfSPgD_iYjU7ezDkrlVDUtXVhDjqbcILE2yqIaVbD1pDYdY51uTH-CciwG-avjg_vkW1-xEQR-SisdDbPKmdR7tXD6xtab7w5fkBVayGySAQwNeEGgZ9xGgVyzPKLVPmxeXYGFs9rko_LCPiK9ACteMUtg6Xb59oucYWaH1jrWp2gHQ38K2IRSyPVkuf4ln2oIV2ut0v03okzKjrj6JakQsQQgQM95qHMys6q1FNuZZrHdrKx82FGGbFm40 "LAYOUT_LEFT_RIGHT Sample")
 
-`LAYOUT_LANDSCAPE()` rotates the default flow visualization to *from Left to Right* like `LAYOUT_LEFT_RIGHT()` additional **directed relations** like Rel_Left(), Rel_Right(), Rel_Up() and Rel_Down() **are not rotated** anymore.
+`LAYOUT_LANDSCAPE()` rotates the default flow visualization to _from Left to Right_ like `LAYOUT_LEFT_RIGHT()` additional **directed relations** like Rel_Left(), Rel_Right(), Rel_Up() and Rel_Down() **are not rotated** anymore.
 
 ```plantuml
 @startuml LAYOUT_LANDSCAPE Sample
@@ -205,9 +211,9 @@ Legend labels and details can be defined via `\n` in `$legendTest` arguments too
 !else
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !endif
-' $legendText with \n defines the label and details of the legend entry ("backend container" is label, "eight sided shape" is details) 
+' $legendText with \n defines the label and details of the legend entry ("backend container" is label, "eight sided shape" is details)
 AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided shape")
-' $legendText without \n defines only a label 
+' $legendText without \n defines only a label
 AddRelTag("async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine(), $legendText="async call")
 ' if no $legendText defined, $tag is automatically the label and all additional displayed properties are the details
 AddRelTag("sync/async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DottedLine())
@@ -237,9 +243,9 @@ Legend details can be deactivated via `SHOW_LEGEND($details=None())`
 !else
   !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 !endif
-' $legendText with \n defines the label and details of the legend entry ("backend container" is label, "eight sided shape" is details) 
+' $legendText with \n defines the label and details of the legend entry ("backend container" is label, "eight sided shape" is details)
 AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided shape")
-' $legendText without \n defines only a label 
+' $legendText without \n defines only a label
 AddRelTag("async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine(), $legendText="async call")
 ' if no $legendText defined, $tag is automatically the label and all additional displayed properties are the details
 AddRelTag("sync/async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DottedLine())
@@ -557,3 +563,172 @@ Rel(web_app, twitter, "Gets tweets from", "HTTPS")
 ```
 
 ![SHOW_PERSON_OUTLINE() Sample](https://www.plantuml.com/plantuml/png/RL5BQzj04BxhLqpTWcLm919wAXJY6jCK4bj4SdCK8sbYB-nZsHqXJEb_xopAeuVeeDNEV8_vHhUHCV1eDDHtXwUssZtMXtrxE3Rtl_QxV0Kr6gyf-wHihyU1uCpiuxUo33WL9yNdiHiZXTvP9ij5xqpfDTeaU1LvqAehjr-lgbGwFjoN1YDJa5Ax5GOgIw7mWiso3zsphA8GdSrnCCgkOR59fueSa5rOhBBw8dgc_U56Es2uvFtr6fRpoCiL_Cb0dZUdVAAkHUz5vuaws7YlLO-id5r8QVjv3PkwAlQxHYY1uAQuXeVVszJRQEsc22bf17OWCJqAn8oQbNX1CocMOC3Aa1QlABFzVPakvxafEYymQMPBKC-0u2db0nMJPYVC0GHpbaxqGJ41dycc5mJg6Ur9p3HUtCY9CqR1uqdIlIvgrXEh-JwBpL8IvClyzNqnmsxI88-aNzVxlfzZb0XotZLDLGigWTwwxtb-4aUvKZgUWpF_Ksx93kdF_WC0 "SHOW_PERSON_OUTLINE()")
+
+## (C4 styled) Sequence diagram specific layout options
+
+- **SHOW_ELEMENT_DESCRIPTIONS(?show)**: show or hide (hidden is default) all element/participant related descriptions
+- **SHOW_FOOT_BOXES(?show)**: show or hide (hidden is default) all element/participant related foot boxes
+- **SHOW_INDEX(?show)**: show or hide (hidden is default) the relationship (call) related index (sequence number)
+
+show is defined with `$show=true` and hide is defined with `$show=false`
+
+### SHOW_ELEMENT_DESCRIPTIONS(?show)
+
+```plantuml
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+SHOW_ELEMENT_DESCRIPTIONS()
+
+Person(admin, "Administrator", "People that administrates the products")
+System_Boundary(c1, 'Sample')
+    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", "Allows users to compare multiple Twitter timelines")
+' in a sequence diagram Boundary_End() has to be used instead of  { }
+Boundary_End()
+System(twitter, "Twitter")
+
+Rel(admin, web_app, "Uses", "HTTPS")
+Rel(web_app, twitter, "Gets tweets from", "HTTPS")
+@enduml
+```
+
+![SHOW_ELEMENT_DESCRIPTIONS() Sample](https://www.plantuml.com/plantuml/png/LL1DRzD04BtxLmpX44TARHLnujHWB5gfIQtQfKThx9qsA-t7iZihgqByTtOX8U3Boc_Unvkv2OoUerR5Esbc5GN1aTc5JtNjSQbU9H_Z50FvsHecmzLiTUqKcgov2YoKdEhcurMNeQVzVQqnCFa4ZJrzZsHcgbosB_hRX-UnlM_txM4OlxHzytZN3NSFXxxS54L7FbXJej3IR66rowyCx96jNoMW8-iK0H-H0Iz32WaYSDwAE7DOROh-BSNhyREDHg1_A-VhBQnxr4cztXIGliOQHcd8bmjD8pgNx9zfWfrpIix8qfgSsBpVmgxlgaCx98ad-51Tm_vRasSxfUmI89yb05kOhNQOA3egbhddi4Xcyi1IaqfPkTaQf064SBeA28cl7ZMSguwj4UK6ZlZRSg9iBv8cCA40-mBm0tuM_xDFwvRy9ozLEoMdlEAHrFcWbqsV0eMymkqmT7rYPTBVwSNcAt58lvIV5s_rlv8RCY9gzGi0 "SHOW_ELEMENT_DESCRIPTIONS() Sample")
+
+### SHOW_FOOT_BOXES(?show)
+
+```plantuml
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+SHOW_FOOT_BOXES()
+
+Person(admin, "Administrator")
+System_Boundary(c1, 'Sample')
+    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", "Allows users to compare multiple Twitter timelines")
+' in a sequence diagram Boundary_End() has to be used instead of  { }
+Boundary_End()
+System(twitter, "Twitter")
+
+Rel(admin, web_app, "Uses", "HTTPS")
+Rel(web_app, twitter, "Gets tweets from", "HTTPS")
+@enduml
+```
+
+![SHOW_FOOT_BOXES() Sample](https://www.plantuml.com/plantuml/png/LL1DRzD04BtlhnZ28OwKsYhYnAbf5EY1aWYxb9irzawRbVPZsPrLL27-ExEY8U3Bo3FluxszoOo9YxFgZV6pBPhWo1ppXwvBU6gV3H_BL3AbENWcp-qSN1Sj-igvogojcRhj-wj3NJtSV-uSPgOagx6d7uNyJ6siygg_sp-E7_VxORpTVz_rpKgf0wKSV8FQ6R-6nQPEapaXXxHOgVv5fDnu6uhNc5wQ-NeDonvTjBHSAP1lAw7GU4hDYQOHOnILHvfW4wCrCx89VY6hxTirRFf3-sKt22KHl6kluVxRjjusrePJXben0mUGVX45uefb8qumd0nB8s3Zo8fNbcHBC1uGycj3q0QV4peuHnrtNZShE6ALX8cgl1QEz44DuGdW9_nI_w7FTHl-uoVHNft5JtqbUtwcIzE7B65atWt3eHTK1VszNcG-4MVvfJgUKd3_Kcx8w-BiRm00 "SHOW_FOOT_BOXES() Sample")
+
+### SHOW_INDEX(?show)
+
+```plantuml
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+SHOW_INDEX()
+
+Person(admin, "Administrator")
+System_Boundary(c1, 'Sample')
+    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", "Allows users to compare multiple Twitter timelines")
+' in a sequence diagram Boundary_End() has to be used instead of  { }
+Boundary_End()
+System(twitter, "Twitter")
+
+Rel(admin, web_app, "Uses", "HTTPS")
+Rel(web_app, twitter, "Gets tweets from", "HTTPS")
+@enduml
+```
+
+![SHOW_INDEX() Sample](https://www.plantuml.com/plantuml/png/LL1DRzD04BtlhnZ28OwKsYhYnAaXH1I9bWYxb9irzawRbVPZsPsLLI7-ExEYeU3Bo3Fluxszoeo9YxFgbV6pBPhWn1ppkwvBkBIFXazbAfdI73oJvtOEheiMVULSPDRMJDt-xSMnhkvkFdSECrEIrTZJZq9-fZPMUTLVVxaVFzr-E7nlDaeTAUNW6zJE-2siTdMQp0avfDL6zK-YuiRteNYDwQcPBxUmxj55I-kD0ldsaWUDfzGiD8qOewZSqmIx6AsPaKtmArdjNszXrn_RsyCWb4Jmfhs4cs_xUjjP6vOCjLq63Y3L8Wh45Sj6d61O34iPOEF8YbUMP6im7X3oSpdG1XyJEZX77GzUDniuOPM4YQgy5exqGGtX0U0d_5B_eSzr6_xZ9z6UdSLFVILxVgQNfdTPmiYy7ePZBwWA-djzaVb8dEMNwdX8mVrBkIAlYxE_0G00 "SHOW_INDEX() Sample")
+
+## Optional support of additional PlantUML elements
+
+More often a full support of all PlantUML elements are requested.  
+They can be set via the new optional `baseShape="...."` argument of the calls
+
+- `System(..., ?baseShape)`,
+- `System_Ext(..., ?baseShape)`,
+- `Container(..., ?baseShape)`,
+- `Container_Ext(..., ?baseShape)`,
+- `Component(..., ?baseShape)`,
+- `Component_Ext(..., ?baseShape)`
+
+The already specified `...Db...()` and `...Queue...()` calls are not extended.
+
+But based on the additional (internal) overhead it has to be explicit enabled
+via `ENABLE_ALL_PLANT_ELEMENTS`. It can be set with following 2 options
+
+- `!ENABLE_ALL_PLANT_ELEMENTS = 1` directly in the scripts file
+  BEFORE the first C4\_\* file is loaded, like e.g.
+
+```plantuml
+@startuml
+!ENABLE_ALL_PLANT_ELEMENTS = 1
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+...
+@enduml
+```
+
+- or via additional command line parameter `-DENABLE_ALL_PLANT_ELEMENTS=1`
+
+If `ENABLE_ALL_PLANT_ELEMENTS` is not set, the diagrams displays the requested "PlantUML element"
+but the style is not correct displayed.
+
+**A simple sample with additional "PlantUML elements":**
+
+```plantuml
+@startuml
+!ENABLE_ALL_PLANT_ELEMENTS = 1
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Component(comp, "Copy component")
+
+Component(config, "Config component", $baseShape="package")
+
+ComponentDb(dbA, "DB A")
+' alternative syntax for ComponentDb() with $baseShape="database"
+Component(dbB, "DB B", $baseShape="database")
+
+Rel_U(comp, config, "Configured by")
+Rel_L(comp, dbA, "Reads from")
+Rel_R(comp, dbB, "Writes to")
+
+SHOW_LEGEND()
+@enduml
+```
+
+![Sample with PlantUML elements](https://www.plantuml.com/plantuml/png/NOzFQy904CNl-HHZA5H13OMU2eA9XlQmfk8VF8P9CcfeiXjs9xL---vMQqrly-VttioR6aRDRLrvlJW98n6deH3fKeJ99er5l8YJpHecyEJrIfbNRK5mP6xCIn1eF8qF9H_Rh3MaSoMP98zpLGTDXT9PZWmNLPa5i-VHqess2n7KQ9Yq7QKpLJTAEatZpdktlf_RQWZ-J3Ldo7-d_g2Bo7rvSD1FSOSDuI53G-iZDZJn6ym_y40TyJph5rbejVC8Ghjv1AoOj4GkFmdCMJ9-mLvfk5SCu6IpThmBP7Ij_sTjZQEBSNHxf0kxJrPKfTjhodz1Maq5P6TBEKXSeSkxAyB2m5wh-hfUtTRkw4wNJ0POkHFhj_TTAkBNE9dt1zwKPD7MrJS0)
+
+### List of supported PlantUML elements
+
+| PlantUML element | Support  | Comment                                                                                                               |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| rectangle        | &#x2705; | already supported (works even without ENABLE_ALL_PLANT_ELEMENTS)                                                      |
+| database         | &#x2705; | already supported (works even without ENABLE_ALL_PLANT_ELEMENTS)                                                      |
+| queue            | &#x2705; | already supported (works even without ENABLE_ALL_PLANT_ELEMENTS)                                                      |
+| node             | &#x274C; | **should not be used**, already defined for Node() (works even without ENABLE_ALL_PLANT_ELEMENTS)                     |
+| person           | &#x274C; | **should not be used**, already defined for Person() (works even without ENABLE_ALL_PLANT_ELEMENTS)                   |
+|                  |          |                                                                                                                       |
+| actor            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| agent            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| artifact         | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| boundary         | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| card             | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| circle           | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| cloud            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| collections      | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| control          | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| entity           | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| file             | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| folder           | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| frame            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| hexagon          | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| interface        | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| label            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| package          | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| stack            | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| storage          | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| usecase          | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+| usecase/         | &#x2611; | requires ENABLE_ALL_PLANT_ELEMENTS                                                                                    |
+|                  |          |                                                                                                                       |
+| actor/           | &#x274C; | requires ENABLE_ALL_PLANT_ELEMENTS, not working (font color not changed to $bkColor) - and/or conflict with existing? |
+
+If `ENABLE_ALL_PLANT_ELEMENTS` is not set, the diagrams displays the requested "PlantUML element"
+but the style is not correct.
